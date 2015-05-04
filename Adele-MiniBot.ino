@@ -82,13 +82,13 @@ void programMode()
 
 		if (digitalRead(LEFT_BUTTON_PIN) == LOW)
 		{
-			readInstruction = turnLeft;
+			readInstruction = rotateLeft;
 			pressedButtons++;
 		}
 
 		if (digitalRead(RIGHT_BUTTON_PIN) == LOW)
 		{
-			readInstruction = turnRight;
+			readInstruction = rotateRight;
 			pressedButtons++;
 		}
 
@@ -138,7 +138,7 @@ void ledBlink(uint8_t times)
 void goForward()
 {
 	analogWrite(MOTOR_RIGHT_PWM_FORWARD, MOTORS_SPEED);
-	analogWrite(MOTOR_LEFT_PWM_FORWARD, MOTORS_SPEED);
+	analogWrite(MOTOR_LEFT_PWM_FORWARD, MOTORS_SPEED - 20);
 	delay(INSTRUCTION_DURATION_MS);
 	analogWrite(MOTOR_RIGHT_PWM_FORWARD, 0);
 	analogWrite(MOTOR_LEFT_PWM_FORWARD, 0);
@@ -147,22 +147,26 @@ void goForward()
 void goBackward()
 {
 	analogWrite(MOTOR_RIGHT_PWM_BACKWARD, MOTORS_SPEED);
-	analogWrite(MOTOR_LEFT_PWM_BACKWARD, MOTORS_SPEED);
+	analogWrite(MOTOR_LEFT_PWM_BACKWARD, MOTORS_SPEED - 20);
 	delay(INSTRUCTION_DURATION_MS);
 	analogWrite(MOTOR_RIGHT_PWM_BACKWARD, 0);
 	analogWrite(MOTOR_LEFT_PWM_BACKWARD, 0);
 }
 
-void turnLeft()
+void rotateLeft()
 {
 	analogWrite(MOTOR_RIGHT_PWM_FORWARD, MOTORS_SPEED);
-	delay(INSTRUCTION_DURATION_MS);
+	analogWrite(MOTOR_LEFT_PWM_BACKWARD, MOTORS_SPEED);
+	delay(INSTRUCTION_DURATION_MS / 4 * 3);
 	analogWrite(MOTOR_RIGHT_PWM_FORWARD, 0);
+	analogWrite(MOTOR_LEFT_PWM_BACKWARD, 0);
 }
 
-void turnRight()
+void rotateRight()
 {
 	analogWrite(MOTOR_LEFT_PWM_FORWARD, MOTORS_SPEED);
-	delay(INSTRUCTION_DURATION_MS);
+	analogWrite(MOTOR_RIGHT_PWM_BACKWARD, MOTORS_SPEED);
+	delay(INSTRUCTION_DURATION_MS / 4 * 3);
 	analogWrite(MOTOR_LEFT_PWM_FORWARD, 0);
+	analogWrite(MOTOR_RIGHT_PWM_BACKWARD, 0);
 }
